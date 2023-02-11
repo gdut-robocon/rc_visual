@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>visual-control-data</title>
+</head>
+<body>
+  <table style="width:100%">
+    <tr>
+      <td style="width:30%"><!--文字显示所占的宽度-->
+        <div style="display: flex;">
+          <div>
+            <h1 id="number1"></h1>
+            <h1 id="number2"></h1>
+            <h1 id="number3"></h1>
+            <h1 id="number4"></h1>
+            <h1 id="number5"></h1>
+            <h1 id="number6"></h1>
+            <h1 id="number7"></h1>
+          </div>
+        </div>
+        </td>
+        <td style="width:35%"><!--图像显示所占的宽度-->
+          <img src="{{ url_for('video_feed') }}"><!--请求video_feed的url-->
+      </td>
+    </tr>  
+  </table>
+  <script>
+    function updateNumbers() {
+      const xhr = new XMLHttpRequest()
+      xhr.open("GET", "/api/data")
+      xhr.onload = function() {
+        const response = JSON.parse(xhr.responseText)
+        document.querySelector("#number1").innerText = "时间: "+response.numbers[0]
+        document.querySelector("#number2").innerText = "状态节点："+response.numbers[1]
+        document.querySelector("#number3").innerText = "离杆距离："+response.numbers[2]
+        document.querySelector("#number4").innerText = "离杆角度："+response.numbers[3]
+        document.querySelector("#number5").innerText = "摩擦轮速度："+response.numbers[4]
+        document.querySelector("#number6").innerText = "参数1："+response.numbers[5]
+        document.querySelector("#number7").innerText = "参数2: "+response.numbers[6]
+      }
+      xhr.send()
+    }
+    setInterval(updateNumbers, 100) <!--每100毫秒执行一次updateRandomNumbers函数-->
+  </script>
+</body>
+</html>
